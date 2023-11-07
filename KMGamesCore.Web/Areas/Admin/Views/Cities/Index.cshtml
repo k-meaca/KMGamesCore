@@ -1,0 +1,53 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using KMGamesCore.Models.Models
+@model IEnumerable<City>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container-fluid justify-content-center w-75">
+    <div class="d-block d-flex justify-content-between ">
+        <h2>Cities</h2>
+        <div>
+            <a asp-controller="Cities" asp-action="Create" class="btn btn-outline-primary">
+                <i class="bi bi-plus-lg"></i>
+            </a>
+        </div>
+    </div>
+    <div class="d-block">
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th>City</th>
+                    <th>Country</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (City city in Model)
+                {
+                    <tr class="table-dark">
+                        <td valign="middle">@city.Name</td>
+                        <td valign="middle">@city.Country.Name</td>
+                        <td align="right">
+                            
+                            <a asp-controller="Cities" asp-action="Edit" asp-route-id="@city.CityId"
+                               class="btn btn-outline-warning rounded-circle pt-1 pb-1 pe-2 ps-2">
+                                <i class="bi bi-brilliance"></i>
+                            </a>
+                            <a asp-controller="Cities" asp-action="Delete" asp-route-id="@city.CityId"
+                               class="btn btn-outline-danger ms-2 rounded-circle pt-1 pb-1 pe-2 ps-2">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

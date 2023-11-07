@@ -1,0 +1,41 @@
+﻿@using KMGamesCore.Models.Models
+@model Developer
+
+@{
+    ViewData["title"] = "Delete";
+}
+
+<div class="container justify-contente-center w-75">
+    <form method="post" asp-controller="Developers" asp-action="Delete">
+        <div class="shadow rounded-4 p-4">
+     
+            <h2>Delete Developer</h2>
+
+            <input asp-for="DeveloperId" type="hidden">
+            <input asp-for="RowVersion" type="hidden"/>
+
+            <div class="form-group mt-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" disabled class="form-control w-50 "/>
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="CountryId" class="form-label"></label>
+                <input asp-for="Country.Name" disabled class="form-control w-50 " />
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="CityId" class="form-label"></label>
+                <input asp-for="City.Name" disabled class="form-control w-50 " />
+            </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-outline-primary w-25">
+                <i class="bi bi-check2"></i>
+            </button>
+            <a asp-controller="Developers" asp-action="Index" class="btn btn-outline-danger w-25">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+    </form>
+</div>

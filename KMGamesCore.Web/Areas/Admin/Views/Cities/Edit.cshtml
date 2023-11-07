@@ -1,0 +1,40 @@
+﻿@using KMGamesCore.Web.ViewModel.CityVM
+
+@model CityEditVm
+@{
+    ViewData["title"] = "Edit";
+}
+
+
+<div class="container justify-content-center w-50 mt-5">
+    <form method="post" asp-controller="Cities" asp-action="Edit">
+        <div class="shadow rounded-4 p-4">
+            <h2>Edit City</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+
+                <label asp-for="City.Name" class="form-label"></label>
+                <input type="text" asp-for="City.Name" class="form-control w-75" />
+                <span asp-validation-for="City.Name" class="text-danger mb-3 mt-1"></span>
+
+                <label asp-for="City.CountryId" class="form-label mt-3"></label>
+                <select asp-for="City.CountryId" asp-items="Model.Countries" class="form-control w-75">
+                    <option disabled selected>Select a country</option>
+                </select>
+                <span asp-validation-for="City.CountryId" class="text-danger"></span>
+
+                @Html.HiddenFor(model => model.City.CityId)
+                @Html.HiddenFor(model => model.City.RowVersion)
+            </div>
+        </div>
+        <div class="d-flex justify-content-between mt-5">
+            <button type="submit" class="btn btn-outline-primary w-25">
+                <i class="bi bi-check2"></i>
+            </button>
+            <a asp-controller="Cities" asp-action="Index" class="btn btn-outline-danger w-25">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+    </form>
+</div>
