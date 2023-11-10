@@ -8,26 +8,30 @@ namespace KMGamesCore.Data.Repository
     {
         //----------PROPERTIES----------//
 
+        private readonly ApplicationDBContext _dbContext;
 
         //----------CONSTRUCTOR----------//
 
-        public CountryRepository(ApplicationDBContext dbContext) : base(dbContext) { }
+        public CountryRepository(ApplicationDBContext dbContext) : base(dbContext) 
+        {
+            _dbContext = dbContext;
+        }
 
         //----------METHODS----------//
 
         public bool Exist(Country country)
         {
-            return _dbSet.Any(c => c.Name == country.Name && c.CountryId != country.CountryId);
+            return _dbContext.Countries.Any(c => c.Name == country.Name && c.CountryId != country.CountryId);
         }
 
         public bool Exist(int id)
         {
-            return _dbSet.Any(c => c.CountryId == id);
+            return _dbContext.Countries.Any(c => c.CountryId == id);
         }
 
         public void Update(Country country)
         {
-            _dbSet.Update(country);
+            _dbContext.Countries.Update(country);
         }
     }
 }

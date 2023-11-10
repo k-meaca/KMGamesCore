@@ -19,10 +19,12 @@ namespace KMGamesCore.Data.DBContext
         //----------DBSETS----------//
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Developer> Developers { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<PlayerType> PlayerTypes { get; set; }
 
     }
 }

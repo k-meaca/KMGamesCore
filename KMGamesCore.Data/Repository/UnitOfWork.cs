@@ -10,18 +10,25 @@ namespace KMGamesCore.Data.Repository
 
         private readonly ApplicationDBContext? _dbContext = null;
 
-        public ICountryRepository Countries { get; private set; }
+        public ICategoryRepository Categories { get; private set; }
         public ICityRepository Cities { get; private set; }
+        public ICountryRepository Countries { get; private set; }
         public IDeveloperRepository Developers { get; private set; }
+        public IGameRepository Games { get; private set; }
+        public IPlayerTypeRepository PlayerTypes { get; private set; }
 
         //----------CONSTRUCTOR----------//
 
         public UnitOfWork(ApplicationDBContext dbContext) 
         {
             _dbContext = dbContext;
-            Countries = new CountryRepository(dbContext);
+
+            Categories = new CategoryRepository(dbContext);
             Cities = new CityRepository(dbContext);
+            Countries = new CountryRepository(dbContext);
             Developers = new DeveloperRepository(dbContext);
+            Games = new GameRepository(dbContext);
+            PlayerTypes = new PlayerTypeRepository(dbContext);
         }
 
         //----------METHODS----------//

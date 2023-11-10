@@ -10,9 +10,13 @@ namespace KMGamesCore.Data.Repository.Interfaces
     {
         //----------PROPERTIES----------//
 
-        ICountryRepository Countries { get; }
+        ICategoryRepository Categories { get; }
         ICityRepository Cities { get; }
+        ICountryRepository Countries { get; }
         IDeveloperRepository Developers { get; }
+        IGameRepository Games { get; }
+        IPlayerTypeRepository PlayerTypes { get; }
+
 
         //----------METHODS----------//
 
