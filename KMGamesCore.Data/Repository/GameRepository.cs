@@ -1,11 +1,15 @@
 ﻿using KMGamesCore.Data.DBContext;
 using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace KMGamesCore.Data.Repository
 {
@@ -32,6 +36,20 @@ namespace KMGamesCore.Data.Repository
         public bool Exist(int id)
         {
             return _dbContext.Games.Any(g => g.GameId == id);
+        }
+
+        public IEnumerable<Game> GetAllGames()
+        {
+            return _dbContext.Games.Include("GameCategories")
+                                   .Include("PlayersGames");
+                                   
+        }
+
+        public Game GetGameById(int id)
+        {
+            return _dbContext.Games.Include("GameCategories")
+                                   .Include("PlayersGames")
+                                   .FirstOrDefault(g => g.GameId == id);
         }
 
         public void Update(Game game)

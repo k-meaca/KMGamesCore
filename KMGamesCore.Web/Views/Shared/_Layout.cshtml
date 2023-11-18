@@ -33,6 +33,7 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="Cities" asp-action="Index">Cities</a>
                                 <a class="nav-link" asp-area="Admin" asp-controller="Countries" asp-action="Index">Countries</a>
                                 <a class="nav-link" asp-area="Admin" asp-controller="Developers" asp-action="Index">Developers</a>
+                                <a class="nav-link" asp-area="Admin" asp-controller="Games" asp-action="Index">Games</a>
                                 <a class="nav-link" asp-area="Admin" asp-controller="PlayerTypes" asp-action="Index">Player Types</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="nav-link text-body" href="#">Separated link</a>
@@ -57,6 +58,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -9,9 +9,14 @@ namespace KMGamesCore.Data.Repository.Interfaces
 {
     public interface IGameRepository : IRepository<Game>
     {
+
         bool Exist(Game game);
 
         bool Exist(int id);
+
+        IEnumerable<Game> GetAllGames();
+
+        Game GetGameById(int id);
 
         void Update(Game game);
     }

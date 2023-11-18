@@ -1,0 +1,53 @@
+﻿@using KMGamesCore.Models.Models
+@model IEnumerable<Game>
+
+@{
+    ViewData["title"] = "Index";
+}
+
+<div class="container-fluid justify-content-center w-75 ">
+
+    <div class="d-flex justify-content-between">
+        <h2>Games</h2>
+        <div>
+            <a asp-controller="Games" asp-action="Create" class="btn btn-outline-primary">
+                <i class="bi bi-plus-lg"></i>
+            </a>
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <td>Game</td>
+                    <td>Developer</td>
+                    <td>Price</td>
+                    <td>Release</td>
+                    <td class="text-end">Actions</td>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach(var game in Model)
+                {
+                    <tr class="table-dark">
+                        <td>@game.Title</td>
+                        <td>@game.Developer.Name</td>
+                        <td>@string.Format("{0:C}",game.ActualPrice)</td>
+                        <td>@game.Release.ToShortDateString()</td>
+                        <td align="right">
+                            <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.GameId"
+                               class="btn btn-outline-warning rounded-circle pt-1 pb-1 pe-2 ps-2">
+                                <i class="bi bi-brilliance"></i>
+                            </a>
+                            <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.GameId"
+                                class="btn btn-outline-danger rounded-circle pt-1 pb-1 pe-2 ps-2">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
