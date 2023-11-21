@@ -123,10 +123,10 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             [ForeignKey("CountryId")]
             public Country Country { get; set; }
 
-            //[Required]
-            //[Range(1, int.MaxValue, ErrorMessage = "City must be selected.")]
-            //[DisplayName("City")]
-            //[BindProperty(SupportsGet = true)]
+            [Required]
+            [Range(1, int.MaxValue, ErrorMessage = "City must be selected.")]
+            [DisplayName("City")]
+            [BindProperty]
             public int CityId { get; set; }
 
             [ForeignKey("CityId")]
@@ -149,29 +149,17 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
 
         }
 
-
-        //public string GetCities(int countryId)
+        //public IActionResult OnGetMessage()
         //{
-
-        //    JsonSerializerOptions options = new JsonSerializerOptions()
-        //    {
-        //        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        //        WriteIndented = true
-        //    };
-
-        //    return JsonSerializer.Serialize(_unitOfWork.Cities.GetAll().Where(c => c.CountryId == countryId), options);
-                
+        //    return new JsonResult("message from code.");
         //}
 
-        //public JsonResult OnPostGetCities([FromBody]int countryId)
-        //{
-        //    return new JsonResult(_unitOfWork.Cities.GetAll().Where(c => c.CountryId == countryId));
-        //}
+        public IActionResult OnGetCities(int countryId)
+        {
 
-        //public JsonResult OnGetString()
-        //{
-        //    return new JsonResult("Sarasasasa");
-        //}
+            return new JsonResult(_unitOfWork.Cities.GetAll().Where(c => c.CountryId == countryId));
+
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -214,7 +202,7 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             //HARDCORDE
-            Input.CityId = 1;
+            //Input.CityId = 1;
 
             if (ModelState.IsValid)
             {
@@ -227,7 +215,9 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
 
 
                 //HARDCODE
-                user.CityId = _unitOfWork.Cities.GetAll().FirstOrDefault().CityId;
+                //user.CityId = _unitOfWork.Cities.GetAll().FirstOrDefault().CityId;
+
+                user.CityId = Input.CityId;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -286,6 +276,16 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
                                          Text = c.Name
                                      };
                                  }).ToList();
+
+            Input.Cities = _unitOfWork.Cities.GetAll()
+                     .Select(c =>
+                     {
+                         return new SelectListItem()
+                         {
+                             Value = c.CityId.ToString(),
+                             Text = c.Name
+                         };
+                     }).ToList();
 
             Input.Roles = _roleManager.Roles.Select(r => r.Name)
                           .Select(r => new SelectListItem
