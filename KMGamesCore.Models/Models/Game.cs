@@ -27,8 +27,9 @@ namespace KMGamesCore.Models.Models
         [StringLength(250, ErrorMessage = "Description must be between {2} and {1} characters.", MinimumLength = 3)]
         public string? Description { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:d}")]
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dddd/MM/yyyy}")]
         public DateTime Release { get; set; }
 
         [Timestamp]

@@ -37,7 +37,7 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 Text = c.Name
             }).ToList();
 
-            foreach(var category in list)
+            foreach (var category in list)
             {
                 selected.FirstOrDefault(s => s.Value == category.CategoryId.ToString()).Selected = true;
             }
@@ -66,9 +66,9 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
         {
             var games = _unitOfWork.Games.GetAll();
 
-            foreach(var game in games)
+            foreach (var game in games)
             {
-                game.Developer = _unitOfWork.Developers.Get(d=> d.DeveloperId == game.DeveloperId);
+                game.Developer = _unitOfWork.Developers.Get(d => d.DeveloperId == game.DeveloperId);
             }
 
             return View(games);
@@ -122,8 +122,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 gameVm.PlayerTypes.ForEach(t =>
                 {
                     t.Text = _unitOfWork.PlayerTypes.Get(pt => pt.PlayerTypeId == int.Parse(t.Value)).Type;
-                }); 
-                
+                });
+
                 gameVm.Developers = _unitOfWork.Developers.GetAll()
                                                    .Select(d => new SelectListItem()
                                                    {
@@ -141,7 +141,7 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                     ModelState.AddModelError("PlayerTypes", "You must peek at least one player type.");
                 }
 
-                if(file is null)
+                if (file is null)
                 {
                     ModelState.AddModelError("Image", "You must upload an image from your files.");
                 }
@@ -203,14 +203,14 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             using (var fileStream = new FileStream(Path.Combine(folder, fileName + extension), FileMode.Create))
             {
                 file.CopyTo(fileStream);
-            
+
             }
 
             game.Image = fileName + extension;
 
             try
             {
-                using(var transaction = new TransactionScope())
+                using (var transaction = new TransactionScope())
                 {
                     _unitOfWork.Games.Add(game);
                     _unitOfWork.SaveChanges();
@@ -231,20 +231,21 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if(id is null || id <= 0)
+            if (id is null || id <= 0)
             {
                 return NotFound();
             }
 
             Game game = _unitOfWork.Games.GetGameById(id.Value);
 
-            if(game is null)
+            if (game is null)
             {
                 return NotFound();
             }
 
             GameVM gameVm = new GameVM()
             {
+                GameId = game.GameId,
                 Title = game.Title,
                 ActualPrice = game.ActualPrice,
                 Release = game.Release,
@@ -261,5 +262,214 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
 
             return View(gameVm);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(GameVM gameVm, IFormFile? file)
+        {
+            bool categoriesValid = gameVm.Categories.Any(c => c.Selected);
+            bool typesValid = gameVm.PlayerTypes.Any(t => t.Selected);
+
+            if (!ModelState.IsValid || !categoriesValid || !typesValid)
+            {
+
+                gameVm.Categories.ForEach(c =>
+                {
+                    c.Text = _unitOfWork.Categories.Get(cat => cat.CategoryId == int.Parse(c.Value)).Name;
+                });
+
+                gameVm.PlayerTypes.ForEach(t =>
+                {
+                    t.Text = _unitOfWork.PlayerTypes.Get(pt => pt.PlayerTypeId == int.Parse(t.Value)).Type;
+                });
+
+                gameVm.Developers = _unitOfWork.Developers.GetAll()
+                                                   .Select(d => new SelectListItem()
+                                                   {
+                                                       Value = d.DeveloperId.ToString(),
+                                                       Text = d.Name
+                                                   }).ToList();
+
+                if (!categoriesValid)
+                {
+                    ModelState.AddModelError("Categories", "You must peek at least one category.");
+                }
+
+                if (!typesValid)
+                {
+                    ModelState.AddModelError("PlayerTypes", "You must peek at least one player type.");
+                }
+
+                //if (file is null)
+                //{
+                //    ModelState.AddModelError("Image", "You must upload an image from your files.");
+                //}
+
+                return View(gameVm);
+            }
+
+            List<PlayerGame> types = gameVm.PlayerTypes.Where(t => t.Selected)
+                                                       .Select(t => new PlayerGame()
+                                                       {
+                                                           PlayerTypeId = int.Parse(t.Value)
+                                                       }).ToList();
+
+            List<GameCategory> categories = gameVm.Categories.Where(c => c.Selected)
+                                                             .Select(c => new GameCategory()
+                                                             {
+                                                                 CategoryId = int.Parse(c.Value)
+                                                             }).ToList();
+
+            Game game = _unitOfWork.Games.Get(g => g.GameId == gameVm.GameId);
+
+            game.Title = gameVm.Title;
+            game.ActualPrice = gameVm.ActualPrice;
+            game.DeveloperId = gameVm.DeveloperId;
+            game.Release = gameVm.Release;
+            game.PlayersGames = types;
+            game.GameCategories = categories;
+
+            if (_unitOfWork.Games.Exist(game))
+            {
+                gameVm.Categories.ForEach(c =>
+                {
+                    c.Text = _unitOfWork.Categories.Get(cat => cat.CategoryId == int.Parse(c.Value)).Name;
+                });
+
+                gameVm.PlayerTypes.ForEach(t =>
+                {
+                    t.Text = _unitOfWork.PlayerTypes.Get(pt => pt.PlayerTypeId == int.Parse(t.Value)).Type;
+                });
+
+                gameVm.Developers = _unitOfWork.Developers.GetAll()
+                                                   .Select(d => new SelectListItem()
+                                                   {
+                                                       Value = d.DeveloperId.ToString(),
+                                                       Text = d.Name
+                                                   }).ToList();
+
+                ModelState.AddModelError(string.Empty, "There already exist a game with that name.");
+
+                return View(gameVm);
+            }
+
+            if (file is not null)
+            {
+                var wwwRootPath = _webHostEnvironment.WebRootPath;
+                var fileName = Guid.NewGuid().ToString();
+                var extension = Path.GetExtension(file.FileName);
+                var folder = Path.Combine(wwwRootPath, @"images\games\");
+
+                System.IO.File.Delete(folder + game.Image);
+
+                using (var fileStream = new FileStream(Path.Combine(folder, fileName + extension), FileMode.Create))
+                {
+
+                    file.CopyTo(fileStream);
+
+                }
+
+                game.Image = fileName + extension;
+            }
+
+
+            try
+            {
+                using (var transaction = new TransactionScope())
+                {
+                    _unitOfWork.Games.Update(game);
+                    _unitOfWork.SaveChanges();
+
+                    transaction.Complete();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                gameVm.Categories.ForEach(c =>
+                {
+                    c.Text = _unitOfWork.Categories.Get(cat => cat.CategoryId == int.Parse(c.Value)).Name;
+                });
+
+                gameVm.PlayerTypes.ForEach(t =>
+                {
+                    t.Text = _unitOfWork.PlayerTypes.Get(pt => pt.PlayerTypeId == int.Parse(t.Value)).Type;
+                });
+
+                gameVm.Developers = _unitOfWork.Developers.GetAll()
+                                                   .Select(d => new SelectListItem()
+                                                   {
+                                                       Value = d.DeveloperId.ToString(),
+                                                       Text = d.Name
+                                                   }).ToList();
+
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                return View(gameVm);
+            }
+        }
+    
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null || id <= 0) 
+            {
+                return NotFound();
+            }
+
+            Game game = _unitOfWork.Games.GetGameById(id.Value);
+
+            //game.Developer = _unitOfWork.Developers.Get(d => d.DeveloperId == game.DeveloperId);
+
+            if(game is null)
+            {
+                return NotFound();
+            }
+
+            return View(game);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Game game)
+        {
+            if (!_unitOfWork.Games.Exist(game.GameId))
+            {
+                return NotFound();
+            }
+
+            game = _unitOfWork.Games.GetGameById(game.GameId);
+
+            try
+            {
+                using(var transaction = new TransactionScope())
+                {
+                    var wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                    var folder = Path.Combine(wwwRootPath, @"images\games\");
+
+                    System.IO.File.Delete(folder + game.Image);
+
+                    _unitOfWork.Games.Delete(game);
+
+                    _unitOfWork.SaveChanges();
+
+                    transaction.Complete();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                return View(game);
+            }
+        }
+
+
     }
+
 }

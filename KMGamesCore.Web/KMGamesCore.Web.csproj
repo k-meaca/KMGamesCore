@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -23,7 +23,11 @@
     <ProjectReference Include="..\KMGamesCore.Utilities\KMGamesCore.Utilities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+	<!--<ItemGroup>
+		<Content Include="wwwroot\lib\jquery\dist\jquery.min.js"/>
+	</ItemGroup>-->
+
+	<ItemGroup>
     <Folder Include="wwwroot\images\games\" />
   </ItemGroup>
 

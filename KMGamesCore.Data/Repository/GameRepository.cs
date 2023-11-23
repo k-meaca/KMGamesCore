@@ -28,6 +28,14 @@ namespace KMGamesCore.Data.Repository
 
         //----------METHODS----------//
 
+        public void DeleteGame(Game game)
+        {
+            //_dbContext.GameCategories.RemoveRange(_dbContext.GameCategories.Where(gc => gc.GameId == game.GameId));
+            //_dbContext.PlayersGames.RemoveRange(_dbContext.PlayersGames.Where(pg => pg.GameId == game.GameId));
+
+            Delete(game);
+        }
+
         public bool Exist(Game game)
         {
             return _dbContext.Games.Any(g => g.Title == game.Title && g.GameId != game.GameId);
@@ -49,11 +57,17 @@ namespace KMGamesCore.Data.Repository
         {
             return _dbContext.Games.Include("GameCategories")
                                    .Include("PlayersGames")
+                                   .Include("Developer")
                                    .FirstOrDefault(g => g.GameId == id);
         }
 
         public void Update(Game game)
         {
+            //_dbContext.Entry(game).State = EntityState.Modified;
+
+            _dbContext.GameCategories.RemoveRange(_dbContext.GameCategories.Where(gc => gc.GameId == game.GameId));
+            _dbContext.PlayersGames.RemoveRange(_dbContext.PlayersGames.Where(pg => pg.GameId == game.GameId));
+
             _dbContext.Update(game);
         }
     }
