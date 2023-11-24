@@ -218,11 +218,32 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                     transaction.Complete();
                 }
 
+                TempData["SUCCESS"] = "Game added successfully";
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+
+                gameVm.Categories.ForEach(c =>
+                {
+                    c.Text = _unitOfWork.Categories.Get(cat => cat.CategoryId == int.Parse(c.Value)).Name;
+                });
+
+                gameVm.PlayerTypes.ForEach(t =>
+                {
+                    t.Text = _unitOfWork.PlayerTypes.Get(pt => pt.PlayerTypeId == int.Parse(t.Value)).Type;
+                });
+
+                gameVm.Developers = _unitOfWork.Developers.GetAll()
+                                                   .Select(d => new SelectListItem()
+                                                   {
+                                                       Value = d.DeveloperId.ToString(),
+                                                       Text = d.Name
+                                                   }).ToList();
+
+
+                TempData["ERROR"] = ex.Message;
 
                 return View(gameVm);
             }
@@ -383,6 +404,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                     transaction.Complete();
                 }
 
+                TempData["SUCCESS"] = "Game edited successfully";
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -404,7 +427,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                                                        Text = d.Name
                                                    }).ToList();
 
-                ModelState.AddModelError(string.Empty, ex.Message);
+
+                TempData["ERROR"] = ex.Message;
 
                 return View(gameVm);
             }
@@ -459,11 +483,13 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                     transaction.Complete();
                 }
 
+                TempData["WARNING"] = "Game was deleted";
+
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["ERROR"] = ex.Message;
 
                 return View(game);
             }

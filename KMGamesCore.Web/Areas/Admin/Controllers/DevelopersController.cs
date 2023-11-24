@@ -126,6 +126,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Developers.Add(developerVm.Developer);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Developer added successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -237,6 +239,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Developers.Update(developerVm.Developer);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Developer edited successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -272,6 +276,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
 
             _unitOfWork.Developers.Delete(developer);
             _unitOfWork.SaveChanges();
+
+            TempData["WARNING"] = "Developer was deleted";
 
             return RedirectToAction("Index");
         }

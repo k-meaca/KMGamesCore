@@ -52,6 +52,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.PlayerTypes.Add(playerType);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Player Type added successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -92,6 +94,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.PlayerTypes.Update(playerType);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Player Type edited successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -124,6 +128,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
 
             _unitOfWork.PlayerTypes.Delete(playerType);
             _unitOfWork.SaveChanges();
+
+            TempData["WARNING"] = "Player Type was deleted";
 
             return RedirectToAction("Index");
         }

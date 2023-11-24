@@ -94,8 +94,9 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Cities.Add(cityVm.City);
             _unitOfWork.SaveChanges();
 
-            return RedirectToAction("Index");
+            TempData["SUCCESS"] = "City added successfully";
 
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -171,6 +172,7 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Cities.Update(cityVm.City);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "City edited successfully";
 
             return RedirectToAction("Index");
         }
@@ -207,6 +209,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             {
                 _unitOfWork.Cities.Delete(city);
                 _unitOfWork.SaveChanges();
+
+                TempData["WARNING"] = "City was deleted";
 
                 return RedirectToAction("Index");
             }

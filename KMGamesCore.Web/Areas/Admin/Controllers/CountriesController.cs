@@ -52,6 +52,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Countries.Add(country);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Country added successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -92,6 +94,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Countries.Update(country);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Country edited successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -125,6 +129,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             {
                 _unitOfWork.Countries.Delete(country);
                 _unitOfWork.SaveChanges();
+
+                TempData["WARNING"] = "Country was deleted";
 
                 return RedirectToAction("Index");
             }

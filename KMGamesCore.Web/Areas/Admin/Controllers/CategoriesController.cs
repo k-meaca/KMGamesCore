@@ -52,6 +52,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Categories.Add(category);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Category added successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -92,6 +94,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             _unitOfWork.Categories.Update(category);
             _unitOfWork.SaveChanges();
 
+            TempData["SUCCESS"] = "Category edited successfully";
+
             return RedirectToAction("Index");
         }
 
@@ -124,6 +128,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
 
             _unitOfWork.Categories.Delete(category);
             _unitOfWork.SaveChanges();
+
+            TempData["WARNING"] = "Category was deleted";
 
             return RedirectToAction("Index");
         }
