@@ -18,6 +18,8 @@ namespace KMGamesCore.Data.Repository.Interfaces
 
         Game GetGameById(int id);
 
+        public List<Game> GetGamesForCategory(int categoryId);
+
         void Update(Game game);
     }
 }

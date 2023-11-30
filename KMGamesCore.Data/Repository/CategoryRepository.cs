@@ -1,6 +1,7 @@
 ﻿using KMGamesCore.Data.DBContext;
 using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,5 +39,37 @@ namespace KMGamesCore.Data.Repository
         {
             _dbContext.Update(category);
         }
+
+        public Dictionary<Category, (string, int)> GetInfoCategories()
+        {
+            var categories = _dbContext.Categories.ToList();
+
+            Dictionary<Category, (string Image, int Items)> categoriesAndgames = new();
+
+            var games = _dbContext.Games.Include("GameCategories").ToList();
+
+            foreach (var category in categories)
+            {
+
+                var game = games.FirstOrDefault(g =>
+                                g.GameCategories.Any(g => g.Category.CategoryId == category.CategoryId));
+
+                if (game is not null)
+                {
+                    int indexGame = games.FindIndex(g => g.GameId == game.GameId);
+
+                    games.RemoveRange(indexGame, 1);
+
+                    string image = @"/images/games/" + game.Image;
+
+                    int items = _dbContext.GameCategories.Where(gc => gc.CategoryId == category.CategoryId).Count();
+
+                    categoriesAndgames.Add(category, (image, items));
+                }
+            };
+
+            return categoriesAndgames;
+        }
+
     }
 }

@@ -1,0 +1,33 @@
+﻿@using KMGamesCore.Models.Models
+@model IEnumerable<Country>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container-fluid justify-content-center w-75">
+    <div class="d-block d-flex justify-content-between ">
+        <h2>Countries</h2>
+        <div>
+            <a asp-controller="Countries" asp-action="Create" class="btn btn-outline-primary">
+                <i class="bi bi-plus-lg"></i>
+            </a>
+        </div>
+    </div>
+    <div class="d-block">
+        <table class="table" id="tblCountries">
+            <thead>
+                <tr class="table-primary">
+                    <th>Country</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider table-dark">
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/countriesTable.js"></script>
+}

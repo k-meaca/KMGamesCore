@@ -49,7 +49,8 @@ namespace KMGamesCore.Data.Repository
         public IEnumerable<Game> GetAllGames()
         {
             return _dbContext.Games.Include("GameCategories")
-                                   .Include("PlayersGames");
+                                   .Include("PlayersGames")
+                                   .Include("Developer");
                                    
         }
 
@@ -69,6 +70,13 @@ namespace KMGamesCore.Data.Repository
             _dbContext.PlayersGames.RemoveRange(_dbContext.PlayersGames.Where(pg => pg.GameId == game.GameId));
 
             _dbContext.Update(game);
+        }
+
+        public List<Game> GetGamesForCategory(int categoryId)
+        {
+            var games = GetAllGames().Where(g => g.GameCategories.Any(gc => gc.CategoryId == categoryId));
+
+            return games.ToList();
         }
     }
 }

@@ -14,6 +14,9 @@ namespace KMGamesCore.Data.Repository.Interfaces
 
         bool Exist(int id);
 
+        public Dictionary<Category, (string, int)> GetInfoCategories();
+
+
         void Update(Category category);
     }
 }
