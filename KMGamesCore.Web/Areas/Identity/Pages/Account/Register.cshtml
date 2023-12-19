@@ -30,9 +30,14 @@
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="form-group form-floating mt-2">
-                    <label asp-for="Input.Name" class="mb-2"></label>
-                    <input type="text" asp-for="Input.Name" class="form-control" aria-required="true" />
-                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    <label asp-for="Input.FirstName" class="mb-2"></label>
+                    <input type="text" asp-for="Input.FirstName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group form-floating mt-2">
+                    <label asp-for="Input.LastName" class="mb-2"></label>
+                    <input type="text" asp-for="Input.LastName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-2 w-100">
                     <label asp-for="Input.CountryId" class="form-label"></label>

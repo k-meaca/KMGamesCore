@@ -1,0 +1,47 @@
+﻿<div class="row d-flex justify-content-center  w-100">
+    <div class="col-3"></div>
+    <div id="paypal-button-container" class="col-6 bg-white p-3"></div>
+    <div class="col-3"></div>
+</div>
+
+
+@section Scripts {
+
+    <script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.ClientId"></script>
+
+    <script type="text/javascript">
+
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'gold',
+                tagline: 'false',
+
+            },
+            createOrder: (data, actions) => {
+                return fetch("@Url.Action("Order")", {
+                    method: "post",
+                }).then((response) => {
+                    if (!response.ok) {
+                        return response.json().then(error => { throw error; });
+                    }
+
+                    return response.json();
+                }).then((order) => order.id)
+                    .catch(error => alert(error.message));
+            },
+            onApprove: (data, actions) => {
+                return fetch(`@Url.Action("Capture")?orderId=${data.orderID}`, {
+                    method: "post",
+                }).then((response) => {
+                    if (!response.ok) {
+                        return response.json().then(error => { throw error; });
+                    }
+
+                    window.location.href = "@Url.Action("Success")";
+                }).catch(error => alert(error.message));
+            }
+        }).render('#paypal-button-container');
+
+    </script>
+}

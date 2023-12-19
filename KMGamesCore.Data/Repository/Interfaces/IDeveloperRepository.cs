@@ -10,6 +10,7 @@ namespace KMGamesCore.Data.Repository.Interfaces
 
         IEnumerable<Developer> GetDevelopers();
 
+        bool ItsRelated(Developer developer);
         void Update(Developer developer);
 
     }

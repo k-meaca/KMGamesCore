@@ -71,5 +71,14 @@ namespace KMGamesCore.Data.Repository
             return categoriesAndgames;
         }
 
+        public bool ItsRelated(Category category)
+        {
+            return _dbContext.GameCategories.Any(gc => gc.CategoryId == category.CategoryId);
+        }
+
+        public IEnumerable<Category> GetCategoriesWithGames()
+        {
+            return _dbContext.Categories.Include("GameCategories").Where(c => c.GameCategories.Count >= 1 );
+        }
     }
 }

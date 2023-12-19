@@ -3,6 +3,7 @@ using KMGamesCore.Web.Models;
 using KMGamesCore.Web.ViewModel.HomeVM;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace KMGamesCore.Web.Areas.Customer.Controllers
 {
@@ -42,6 +43,19 @@ namespace KMGamesCore.Web.Areas.Customer.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public IActionResult GetCategories()
+        {
+            var categories = _unitOfWork.Categories.GetCategoriesWithGames().ToList();
+
+            JsonSerializerOptions options = new()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return Json(categories,options);
         }
     }
 }

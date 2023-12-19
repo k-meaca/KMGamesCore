@@ -44,15 +44,19 @@ namespace KMGamesCore.Models.Models
 
         public string? Image { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 
         [DisplayName("Game Categories")]
         public virtual ICollection<GameCategory> GameCategories { get; set; }
 
-        public ICollection<PlayerType> PlayerTypes { get; set; }
+        public ICollection<PlayerType> PlayerTypes { get; set; } = new List<PlayerType>();
 
         [DisplayName("Player Types")]
         public ICollection<PlayerGame> PlayersGames { get; set; }
+
+        public ICollection<GameInCart> GamesInCart { get; set; }
+
+        public ICollection<SaleDetail> SalesDetails { get; set; }
 
         //----------CONSTRUCTOR----------//
 

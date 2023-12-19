@@ -1,6 +1,7 @@
 ﻿using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace KMGamesCore.Web.Areas.Admin.Controllers
 {
@@ -114,6 +115,13 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if (_unitOfWork.Categories.ItsRelated(category))
+            {
+                TempData["ERROR"] = "Can't be deleted because it has related games";
+
+                return RedirectToAction("Index");
+            }
+
             return View(category);
         }
 
@@ -132,6 +140,7 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             TempData["WARNING"] = "Category was deleted";
 
             return RedirectToAction("Index");
+
         }
     }
 }

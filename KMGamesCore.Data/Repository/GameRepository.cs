@@ -78,5 +78,51 @@ namespace KMGamesCore.Data.Repository
 
             return games.ToList();
         }
+
+        public Game GetGameWithDetails(int? gameId)
+        {
+
+            Game game = GetGameById(gameId.Value);
+
+            if(game is null)
+            {
+                throw new Exception();
+            }
+
+            foreach(var type in game.PlayersGames)
+            {
+                game.PlayerTypes.Add(_dbContext.PlayerTypes.FirstOrDefault(pt => pt.PlayerTypeId == type.PlayerTypeId));
+            }
+
+            foreach (var category in game.GameCategories)
+            {
+                game.Categories.Add(_dbContext.Categories.FirstOrDefault(gc => gc.CategoryId == category.CategoryId));
+            }
+
+            return game;
+        }
+
+        public List<Game> GetGamesRelated(Game game)
+        {
+            List<Game> gamesTypes = _dbContext.Games.Where(
+                                                        g => g.PlayersGames.Any(pt =>
+                                                                pt.PlayerTypeId == game.PlayerTypes.FirstOrDefault().PlayerTypeId
+                                                                && pt.GameId != game.GameId))
+                                                    .Take(3).ToList();
+
+            List<Game> gamesCategories = _dbContext.Games.Where(
+                                            g => g.GameCategories.Any(pg =>
+                                                    pg.CategoryId == game.GameCategories.FirstOrDefault().CategoryId
+                                                    && pg.GameId != game.GameId))
+                                        .Skip(3).Take(3).ToList();
+
+            return gamesTypes.Union(gamesCategories).ToList();
+
+        }
+
+        public bool ItsRelated(Game game) 
+        {
+            return _dbContext.SalesDetails.Any(sd => sd.GameId == game.GameId);
+        }
     }
 }

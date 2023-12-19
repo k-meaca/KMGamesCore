@@ -22,6 +22,59 @@ namespace KMGamesCore.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CategoryGame", b =>
+                {
+                    b.Property<int>("CategoriesCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GamesGameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesCategoryId", "GamesGameId");
+
+                    b.HasIndex("GamesGameId");
+
+                    b.ToTable("CategoryGame");
+                });
+
+            modelBuilder.Entity("GamePlayerType", b =>
+                {
+                    b.Property<int>("GamesGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerTypesPlayerTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GamesGameId", "PlayerTypesPlayerTypeId");
+
+                    b.HasIndex("PlayerTypesPlayerTypeId");
+
+                    b.ToTable("GamePlayerType");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("KMGamesCore.Models.Models.City", b =>
                 {
                     b.Property<int>("CityId")
@@ -104,6 +157,201 @@ namespace KMGamesCore.Data.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Developers");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Game", b =>
+                {
+                    b.Property<int>("GameId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GameId"), 1L, 1);
+
+                    b.Property<decimal>("ActualPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("DeveloperId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Release")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GameId");
+
+                    b.HasIndex("DeveloperId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.GameCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("CategoryId", "GameId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("GameCategories");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.GameInCart", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "ShoppingCartId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("GamesInCart");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.PlayerGame", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("GameId", "PlayerTypeId");
+
+                    b.HasIndex("PlayerTypeId");
+
+                    b.ToTable("PlayersGames");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.PlayerType", b =>
+                {
+                    b.Property<int>("PlayerTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerTypeId"), 1L, 1);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PlayerTypeId");
+
+                    b.ToTable("PlayerTypes");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Sale", b =>
+                {
+                    b.Property<int>("SaleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleId"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PayPalId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("SaleId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.SaleDetail", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("GamePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("GameId", "SaleId");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("SalesDetails");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("ShoppingCartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingCartId"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ShoppingCartId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -257,12 +505,10 @@ namespace KMGamesCore.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -299,12 +545,10 @@ namespace KMGamesCore.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -324,8 +568,11 @@ namespace KMGamesCore.Data.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetAddress")
@@ -339,6 +586,36 @@ namespace KMGamesCore.Data.Migrations
                     b.HasIndex("CountryId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("CategoryGame", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GamePlayerType", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.PlayerType", null)
+                        .WithMany()
+                        .HasForeignKey("PlayerTypesPlayerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("KMGamesCore.Models.Models.City", b =>
@@ -369,6 +646,115 @@ namespace KMGamesCore.Data.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Game", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Developer", "Developer")
+                        .WithMany()
+                        .HasForeignKey("DeveloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Developer");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.GameCategory", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Category", "Category")
+                        .WithMany("GameCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.Game", "Game")
+                        .WithMany("GameCategories")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.GameInCart", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Game", "Game")
+                        .WithMany("GamesInCart")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("GamesInCart")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("ShoppingCart");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.PlayerGame", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Game", "Game")
+                        .WithMany("PlayersGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.PlayerType", "PlayerType")
+                        .WithMany("PlayersGames")
+                        .HasForeignKey("PlayerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("PlayerType");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Sale", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.SaleDetail", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.Game", "Game")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KMGamesCore.Models.Models.Sale", "Sale")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Sale");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("KMGamesCore.Models.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,6 +825,37 @@ namespace KMGamesCore.Data.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Category", b =>
+                {
+                    b.Navigation("GameCategories");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Game", b =>
+                {
+                    b.Navigation("GameCategories");
+
+                    b.Navigation("GamesInCart");
+
+                    b.Navigation("PlayersGames");
+
+                    b.Navigation("SalesDetails");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.PlayerType", b =>
+                {
+                    b.Navigation("PlayersGames");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.Sale", b =>
+                {
+                    b.Navigation("SalesDetails");
+                });
+
+            modelBuilder.Entity("KMGamesCore.Models.Models.ShoppingCart", b =>
+                {
+                    b.Navigation("GamesInCart");
                 });
 #pragma warning restore 612, 618
         }

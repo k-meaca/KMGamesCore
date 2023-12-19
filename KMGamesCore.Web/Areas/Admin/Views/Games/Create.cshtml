@@ -25,7 +25,7 @@
 
                 <div class="form-group mt-2 col-6">
                     <label asp-for="ActualPrice" class="form-label"></label>
-                    <input type="number" asp-for="ActualPrice" class="form-control" placeholder="0,00"/>
+                    <input type="number" asp-for="ActualPrice" class="form-control" min="1" value="1" step="0.01"/>
                     <span asp-validation-for="ActualPrice" class="text-danger"></span>
                 </div>
 

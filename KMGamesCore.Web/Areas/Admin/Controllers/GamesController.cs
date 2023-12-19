@@ -451,6 +451,13 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if(_unitOfWork.Games.ItsRelated(game))
+            {
+                TempData["ERROR"] = "Can't be deleted because it has related sales.";
+
+                return RedirectToAction("Index");
+            }
+
             return View(game);
         }
 

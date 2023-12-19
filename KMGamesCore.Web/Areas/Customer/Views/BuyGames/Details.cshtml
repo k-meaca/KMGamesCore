@@ -1,0 +1,181 @@
+﻿@using KMGamesCore.Web.ViewModel.BuyGameVm;
+@model GameDetailVm
+
+@{
+    ViewData["title"] = "Details";
+}
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Customer" asp-controller="BuyGames" asp-action="Index">
+                Buy Games
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @Model.Game.Title
+        </li>
+    </ol>
+</nav>
+
+<!-- Product section-->
+<section class="">
+    <div class="container px-4 px-lg-5 my-5 shadow rounded-4 p-4">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="@Model.Game.Image" alt="Games image goes here." /></div>
+            <div class="col-md-6">
+                <h3 class="display-5 fw-bolder">@Model.Game.Title</h3>
+                <div class="fs-5 mb-5">
+                    <span class="text-decoration-line-through">@string.Format("{0:C}",Model.Game.ActualPrice*1.7m)</span>
+                    <span>@string.Format("{0:C}",Model.Game.ActualPrice)</span>
+                </div>
+                <p class="lead">@Model.Game.Description</p>
+                <div class="d-flex">
+                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
+                    @if (User.IsInRole("Individual") || User.IsInRole("Customer"))
+                    {
+                        <form asp-area="Customer" asp-controller="BuyGames" asp-action="Details" asp-route-gameId="@Model.Game.GameId">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <i class="bi-cart-fill me-1"></i>
+                                Add to cart
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button id="" class="signIn btn btn-outline-primary" type="button">
+                            Add to cart
+                        </button>
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product End -->
+
+
+<!-- Related Start -->
+<div class="container-fluid py-5">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">You May Also Like</span></h2>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel">
+                @foreach(var game in Model.GamesRelated)
+                {
+                    string path = @"/images/games/" + game.Image;
+
+                        <div class="product-item bg-light mb-4">
+                            <a class="text-decoration-none" asp-controller="BuyGames" asp-action="Details" asp-route-gameId="@game.GameId">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="@path" alt="">
+                                </div>
+                                <div class="text-center py-4">
+                                    <h6 class="h6 text-truncate product-title">@game.Title</h6>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5 class="text-dark">@string.Format("{0:C}", game.ActualPrice)</h5>
+                                        <h6 class="text-muted ml-2"><del>@string.Format("{0:C}", decimal.Add(game.ActualPrice, game.ActualPrice * 1.7m))</del></h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="bi bi-star-fill text-primary mr-1"></small>
+                                        <small class="bi bi-star-fill text-primary mr-1"></small>
+                                        <small class="bi bi-star-fill text-primary mr-1"></small>
+                                        <small class="bi bi-star-fill text-primary mr-1"></small>
+                                        <small class="bi bi-star-half text-primary mr-1"></small>
+                                        <small class="text-dark">(99)</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related End -->
+
+<!-- Modal Start -->
+<svg style="display: none;">
+    <symbol id="github" viewBox="0 0 16 16">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </symbol>
+
+    <symbol id="twitter" viewBox="0 0 16 16">
+        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+    </symbol>
+
+    <symbol id="facebook" viewBox="0 0 16 16">
+        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+    </symbol>
+</svg>
+
+<div class="modal fade modal-signin" tabindex="-1" role="dialog" id="modalSignIn" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark rounded-4 text-primary">
+            <div class="modal-header bg-dark p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2 text-primary">Sign up for free</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light-subtle p-5 pt-0 mt-4">
+                <form class="form" id="account" method="post" asp-area="Identity" asp-page="/Account/Login">
+                    <div class="w-100 form-floating mb-3">
+                        <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="w-100 form-floating mb-3">
+                        <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">
+                        Sign up
+                    </button>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">
+                        Sign up
+                    </button>
+                    <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                    <hr class="my-4">
+                    <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2>
+                    <button class="w-100 py-2 mb-2 btn btn-outline-info rounded-3 text-dark" type="button">
+                        <svg class="bi me-1" width="16" height="16"><use xlink:href="#twitter" /></svg>
+                        Sign up with Twitter
+                    </button>
+                    <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3 text-dark" type="button">
+                        <svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook" /></svg>
+                        Sign up with Facebook
+                    </button>
+                    <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3 text-dark" type="button">
+                        <svg class="bi me-1" width="16" height="16"><use xlink:href="#github" /></svg>
+                        Sign up with GitHub
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal End -->
+
+
+@section Scripts{
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/showModal.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+
+    <script type="text/javascript">
+        $('.owl-carousel').owlCarousel({
+            margin: 10,
+            responsive: {
+                0: {
+                    items: 4
+                }
+            }
+        })
+    </script>
+}

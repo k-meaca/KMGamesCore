@@ -12,11 +12,11 @@ namespace KMGamesCore.Data.Repository.Interfaces
         void Add(T item);
 
         void Delete(T item);
+        Task<bool> Exist(Expression<Func<T, bool>> condition);
 
-        T Get(Expression<Func<T,bool>> filter);
+        T Get(Expression<Func<T,bool>> filter,string? includes = null);
 
         IEnumerable<T> GetAll();
 
-        
     }
 }

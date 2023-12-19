@@ -38,9 +38,26 @@ namespace KMGamesCore.Data.Repository
             _dbSet.Remove(item);
         }
 
-        public T Get(Expression<Func<T,bool>> filter)
+        public async Task<bool> Exist(Expression<Func<T,bool>> condition)
         {
-            return _dbSet.Where(filter).FirstOrDefault();
+            return await _dbSet.AnyAsync(condition);
+        }
+
+        public T Get(Expression<Func<T,bool>> filter, string? includes = null)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+
+            if (includes is not null)
+            {
+                string[] properties = includes.Trim().Split(',');
+
+                foreach (var property in properties)
+                {
+                    query = query.Include(property);
+                }
+            }
+
+            return query.Where(filter).FirstOrDefault();
         }
 
         public IEnumerable<T> GetAll()

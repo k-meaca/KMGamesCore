@@ -114,6 +114,13 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if (_unitOfWork.PlayerTypes.ItsRelated(type))
+            {
+                TempData["Error"] = "Can't be deleted because it has related games";
+
+                return RedirectToAction("Index");
+            }
+
             return View(type);
         }
 

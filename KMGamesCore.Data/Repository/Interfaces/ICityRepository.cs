@@ -13,6 +13,8 @@ namespace KMGamesCore.Data.Repository.Interfaces
 
         bool Exist(int id);
 
+        bool ItsRelated(City city);
+
         void Update(City city);
     }
 }

@@ -10,12 +10,16 @@ namespace KMGamesCore.Data.Repository.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
+
         bool Exist(Category category);
 
         bool Exist(int id);
 
-        public Dictionary<Category, (string, int)> GetInfoCategories();
+        IEnumerable<Category> GetCategoriesWithGames();
 
+        Dictionary<Category, (string, int)> GetInfoCategories();
+
+        bool ItsRelated(Category category);
 
         void Update(Category category);
     }

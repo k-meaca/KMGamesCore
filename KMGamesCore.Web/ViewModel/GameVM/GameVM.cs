@@ -19,10 +19,9 @@ namespace KMGamesCore.Web.ViewModel.GameVM
         public string Title { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:C}")]
         [DisplayName("Actual Price")]
-        [Range(1, 1000, ErrorMessage = "Price must be non-negative and less than 1000.")]
-        public decimal ActualPrice { get; set; }
+        [Range(1, 1000.00, ErrorMessage = "Price must be non-negative and less than 1000.")]
+        public decimal ActualPrice { get; set; } = 1.00m;
 
         [StringLength(250, ErrorMessage = "Description must be between {2} and {1} characters.", MinimumLength = 3)]
         public string? Description { get; set; }

@@ -1,0 +1,41 @@
+﻿<li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle text-body" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Games</a>
+    <div class="dropdown-menu flex-wrap" id="categories"></div>
+</li>
+
+<script src="~/lib/jquery/dist/jquery.min.js" ></script>
+<script type="text/javascript">
+
+    
+
+    $(document).ready(function () {
+        
+        let categories = document.querySelector("#categories");
+
+        let url = "@Url.Action("GetCategories","Home")";
+
+        $.ajax({
+            "type" : "GET",
+            "url" : url,
+            "contentTye": "application/json",
+            "dataType": "json",
+            "success": function (data) {
+
+                categories.innerHTML += `<a class="nav-link dropdown-item" href="/Customer/BuyGames"> All </a>`;
+
+                for (index in data) {
+                    // console.log(data[index].Name);
+
+                    categories.innerHTML += `<a class="nav-link dropdown-item" href="/Customer/BuyGames?categoryId=${data[index].CategoryId}">
+                                                    ${data[index].Name}
+                                            </a>`;
+                }
+
+            },
+            "error": function () {
+                console.log('error');
+            }
+        })
+    })
+
+</script>

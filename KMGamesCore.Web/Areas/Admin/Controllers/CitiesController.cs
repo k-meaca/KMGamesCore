@@ -192,6 +192,13 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if (_unitOfWork.Cities.ItsRelated(city))
+            {
+                TempData["ERROR"] = "Can't be deleted because it has related developers";
+
+                return RedirectToAction("Index");
+            }
+
             city.Country = _unitOfWork.Countries.Get(c => c.CountryId == city.CountryId);
 
             return View(city);

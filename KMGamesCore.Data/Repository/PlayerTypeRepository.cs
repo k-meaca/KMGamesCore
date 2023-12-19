@@ -33,6 +33,11 @@ namespace KMGamesCore.Data.Repository
             return _dbContext.PlayerTypes.Any(t=> t.PlayerTypeId == id);
         }
 
+        public bool ItsRelated(PlayerType type)
+        {
+            return _dbContext.PlayersGames.Any(pg => pg.PlayerTypeId == type.PlayerTypeId);
+        }
+
         public void Update(PlayerType type)
         {
             _dbContext.Update(type);

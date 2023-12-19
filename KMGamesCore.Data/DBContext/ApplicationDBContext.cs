@@ -26,8 +26,11 @@ namespace KMGamesCore.Data.DBContext
         public DbSet<Game> Games { get; set; }
         public DbSet<GameCategory> GameCategories { get; set; }
         public DbSet<PlayerType> PlayerTypes { get; set; }
-
         public DbSet<PlayerGame> PlayersGames { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<GameInCart> GamesInCart { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<SaleDetail> SalesDetails { get; set; }
 
         //----------METHODS----------//
 
@@ -66,13 +69,10 @@ namespace KMGamesCore.Data.DBContext
 
             builder.Entity<PlayerGame>().HasKey(pg => new { pg.GameId, pg.PlayerTypeId });
 
-            //builder.Entity<PlayerGame>().HasOne(pg => pg.Game)
-            //                .WithMany(g => g.PlayersGame)
-            //                .HasForeignKey(pg => pg.GameId);
+            builder.Entity<GameInCart>().HasKey(gic => new { gic.GameId, gic.ShoppingCartId });
 
-            //builder.Entity<PlayerGame>().HasOne(pg => pg.PlayerType)
-            //                .WithMany(p => p.PlayersGames)
-            //                .HasForeignKey(pg => pg.PlayerTypeId);
+            builder.Entity<SaleDetail>().HasKey(sd => new { sd.GameId, sd.SaleId });
+
         }
 
     }

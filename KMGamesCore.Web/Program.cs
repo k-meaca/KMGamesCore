@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using KMGamesCore.Utilities;
+using KMGamesCore.Web.Areas.PayPal.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,16 @@ builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
+// PayPal Client configuration
+
+builder.Services.AddSingleton(x =>
+    new PayPalClient(
+        builder.Configuration["PayPal:ClientId"],
+        builder.Configuration["PayPal:Secret"],
+        builder.Configuration["PayPal:Mode"]
+    )
+);
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -34,6 +46,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+var cultureInfo = new CultureInfo("en-US");
+cultureInfo.NumberFormat.CurrencySymbol = "$";
+cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -43,6 +62,14 @@ app.UseAuthentication();;
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.MapControllerRoute(
     name: "default",

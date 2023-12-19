@@ -29,6 +29,11 @@ namespace KMGamesCore.Data.Repository
             return _dbContext.Countries.Any(c => c.CountryId == id);
         }
 
+        public bool ItsRelated(Country country)
+        {
+            return _dbContext.Cities.Any(c => c.CountryId == country.CountryId);
+        }
+
         public void Update(Country country)
         {
             _dbContext.Countries.Update(country);

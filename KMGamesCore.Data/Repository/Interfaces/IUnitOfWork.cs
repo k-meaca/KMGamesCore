@@ -10,15 +10,24 @@ namespace KMGamesCore.Data.Repository.Interfaces
     {
         //----------PROPERTIES----------//
 
+        IApplicationUsersRepository ApplicationUsers {  get; }
         ICategoryRepository Categories { get; }
         ICityRepository Cities { get; }
         ICountryRepository Countries { get; }
         IDeveloperRepository Developers { get; }
         IGameRepository Games { get; }
         IPlayerTypeRepository PlayerTypes { get; }
+        ISalesRepository Sales { get; }
+        IShoppingCartRepository ShoppingCarts { get; }
 
 
         //----------METHODS----------//
+
+        void BeginTransaction();
+
+        void CommitChanges();
+
+        void RollbackChanges();
 
         void SaveChanges();
     }

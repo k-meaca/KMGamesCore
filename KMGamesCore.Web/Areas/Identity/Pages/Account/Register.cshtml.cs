@@ -109,7 +109,10 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
-            public string Name { get; set; }
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
 
             public string? StreetAddress { get; set; }
 
@@ -208,7 +211,8 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.Name = Input.Name;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
                 user.CountryId = Input.CountryId;
 
                 user.ZipCode = Input.ZipCode;
