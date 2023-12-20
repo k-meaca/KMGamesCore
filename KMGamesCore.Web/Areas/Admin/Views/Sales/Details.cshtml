@@ -1,0 +1,75 @@
+﻿@using KMGamesCore.Models.Models
+@model Sale
+
+@{
+    ViewData["Title"] = "Sale Detail";
+}
+
+<div class="container-fluid justify-content-center w-75 shadow p-4 rounded-4">
+
+    @Html.HiddenFor(model => model.SaleId)
+
+    <div class="row">
+        <h4>Go back</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="Sales" asp-action="Index" class="link-info">
+                        Sales
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    @Model.PayPalId
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row justify-content-start">
+
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.PayPalId" class="form-label text-info"></label>
+            <input asp-for="@Model.PayPalId" readonly class="form-control" />
+        </div>
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.ApplicationUser.Email" class="form-label "></label>
+            <input asp-for="@Model.ApplicationUser.Email" readonly class="form-control"/>
+        </div>
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.Date" class="form-label text-info"></label>
+            <input asp-for="@Model.Date" readonly class="form-control" />
+        </div>
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.ApplicationUser.FirstName" class="form-label "></label>
+            <input asp-for="@Model.ApplicationUser.FirstName" readonly class="form-control" />
+        </div>
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.Total" class="form-label text-info"></label>
+            <input readonly class="form-control text-dark" value="@string.Format("{0:C}",Model.Total)"/>
+        </div>
+        <div class="col-6 mt-2">
+            <label asp-for="@Model.ApplicationUser.LastName" class="form-label "></label>
+            <input asp-for="@Model.ApplicationUser.LastName" readonly class="form-control" />
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid justify-content-center p-4 mt-3">
+    <table class="table align-baseline" id="gamesDetailsTable">
+        <thead class="table-primary">
+            <tr>
+                <th>Image</th>
+                <th>Game</th>
+                <th>Developer</th>
+                <th>Release</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider table-secondary">
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/gameDetailsTable.js"></script>
+}

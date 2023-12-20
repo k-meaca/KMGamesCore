@@ -24,6 +24,8 @@ namespace KMGamesCore.Data.Repository.Interfaces
 
         List<Game> GetGamesRelated(Game game);
 
+        List<PurchasedGame> GetPurchasedGamesFor(string userId);
+
         bool ItsRelated(Game game);
 
         void Update(Game game);

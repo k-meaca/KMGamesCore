@@ -32,5 +32,7 @@ namespace KMGamesCore.Models.Models
         public City City { get; set; }
 
         public string? ZipCode { get; set; }
+
+        public ICollection<PurchasedGame>? PurchasedGames { get; set; }
     }
 }

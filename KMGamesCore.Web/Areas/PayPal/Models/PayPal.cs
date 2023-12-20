@@ -4,7 +4,8 @@
     {
         public Name name { get; set; }
         public string email_address { get; set; }
-
         public Address address { get; set; }
+
+        public Phone phone { get; set; }
     }
 }

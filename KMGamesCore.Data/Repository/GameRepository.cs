@@ -124,5 +124,23 @@ namespace KMGamesCore.Data.Repository
         {
             return _dbContext.SalesDetails.Any(sd => sd.GameId == game.GameId);
         }
+
+        public List<PurchasedGame> GetPurchasedGamesFor(string userId)
+        {
+            
+            var purchasedGames = _dbContext.PurchasedGames.Include("Game")
+                                                          .Include(g => g.Game.Developer)                                            
+                                                          .Where(p => p.ApplicationUserId == userId).ToList();
+
+            var path = @"/images/games/";
+
+            foreach(var purchase in purchasedGames)
+            {
+                purchase.Game.Image = path + purchase.Game.Image;
+            }
+
+            return purchasedGames;
+
+        }
     }
 }

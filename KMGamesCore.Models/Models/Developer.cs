@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace KMGamesCore.Models.Models
 {
@@ -15,6 +17,8 @@ namespace KMGamesCore.Models.Models
 
         [DisplayName("Developer")]
         [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 3)]
+
+        [JsonPropertyName("Developer")]
         public string Name { get; set; }
 
         [Required]

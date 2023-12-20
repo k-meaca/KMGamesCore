@@ -21,6 +21,7 @@ namespace KMGamesCore.Models.Models
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Total { get; set; }
 
         public DateTime Date { get; set; }

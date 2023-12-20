@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KMGamesCore.Data.Repository.Interfaces
 {
-    public interface IApplicationUsersRepository : IRepository<ApplicationUser>
+    public interface ICountryCodeRepository : IRepository<CountryCode>
     {
-        void AddGamesTo(ApplicationUser user, List<PurchasedGame> games);
     }
 }

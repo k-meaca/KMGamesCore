@@ -22,6 +22,9 @@ namespace KMGamesCore.Data.DBContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
+
+        public DbSet<CountryCode> CountriesCode { get; set; }
+
         public DbSet<Developer> Developers { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<GameCategory> GameCategories { get; set; }
@@ -31,6 +34,8 @@ namespace KMGamesCore.Data.DBContext
         public DbSet<GameInCart> GamesInCart { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleDetail> SalesDetails { get; set; }
+
+        public DbSet<PurchasedGame> PurchasedGames { get; set; }
 
         //----------METHODS----------//
 
@@ -72,6 +77,8 @@ namespace KMGamesCore.Data.DBContext
             builder.Entity<GameInCart>().HasKey(gic => new { gic.GameId, gic.ShoppingCartId });
 
             builder.Entity<SaleDetail>().HasKey(sd => new { sd.GameId, sd.SaleId });
+
+            builder.Entity<PurchasedGame>().HasKey(pg => new { pg.GameId, pg.ApplicationUserId });
 
         }
 

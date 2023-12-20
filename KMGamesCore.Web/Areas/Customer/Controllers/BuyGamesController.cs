@@ -162,14 +162,28 @@ namespace KMGamesCore.Web.Areas.Customer.Controllers
 
             try
             {
-                _unitOfWork.ShoppingCarts.RemoveFromCart(gameId.Value, cartId.Value);
+                _unitOfWork.BeginTransaction();
+
+                 _unitOfWork.ShoppingCarts.RemoveFromCart(gameId.Value, cartId.Value);
 
                 _unitOfWork.SaveChanges();
 
-                return RedirectToAction("ShowCart", "BuyGames", new { userId = User.Claims.First().Value });
+                _unitOfWork.CommitChanges();
+                
+                if(_unitOfWork.ShoppingCarts.Exist(cartId.Value))
+                {
+
+                    return RedirectToAction("ShowCart", "BuyGames", new { userId = User.Claims.First().Value });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "BuyGames");
+                }
             }
             catch (Exception ex)
             {
+                _unitOfWork.RollbackChanges();
+
                 return BadRequest(ex.Message);
             }
         }

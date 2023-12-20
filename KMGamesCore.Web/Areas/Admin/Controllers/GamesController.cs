@@ -1,9 +1,11 @@
 ﻿using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
+using KMGamesCore.Web.Areas.PayPal.Models;
 using KMGamesCore.Web.ViewModel.GameVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Transactions;
 
 namespace KMGamesCore.Web.Areas.Admin.Controllers
@@ -73,6 +75,8 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
 
             return View(games);
         }
+
+        #region CREATE
 
         [HttpGet]
         public IActionResult Create()
@@ -249,6 +253,9 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             }
         }
 
+        #endregion
+
+        #region EDIT
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -433,7 +440,11 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
                 return View(gameVm);
             }
         }
-    
+
+        #endregion
+
+        #region DELETE
+
         [HttpGet]
         public IActionResult Delete(int? id)
         {
@@ -502,6 +513,40 @@ namespace KMGamesCore.Web.Areas.Admin.Controllers
             }
         }
 
+        #endregion
+
+        #region API CALL
+
+        public IActionResult GetGamesDetails(int saleId)
+        {
+            var sale = _unitOfWork.Sales.Get(s => s.SaleId == saleId,"SalesDetails");
+
+            var games = new List<Game>();
+
+            string path = @"/images/games/";
+            
+            foreach(var detail in sale.SalesDetails)
+            {
+                var game = _unitOfWork.Games.Get(g => g.GameId == detail.GameId);
+
+                game.Image = path + game.Image;
+                game.Developer = _unitOfWork.Developers.Get(d => d.DeveloperId == game.DeveloperId);
+
+                games.Add(game);
+            }
+
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true,
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+            };
+
+            return Json(new { data = games }, options);
+
+        }
+
+        #endregion
 
     }
 

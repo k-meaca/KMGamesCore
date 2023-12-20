@@ -1,6 +1,7 @@
 ﻿using KMGamesCore.Data.DBContext;
 using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,11 @@ namespace KMGamesCore.Data.Repository
 
         //----------METHODS----------//
 
+        public bool Exist(int cartId)
+        {
+            return _dbContext.ShoppingCarts.FirstOrDefault(s => s.ShoppingCartId == cartId) is null? false : true;
+        }
+
         public void RemoveFromCart(int gameId, int cartId)
         {
             GameInCart gameInCart = new()
@@ -34,7 +40,17 @@ namespace KMGamesCore.Data.Repository
             };
 
             _dbContext.GamesInCart.Remove(gameInCart);
+
+            if (_dbContext.GamesInCart.Count(g => g.ShoppingCartId == cartId) == 1)
+            {
+                var cart = _dbContext.ShoppingCarts.FirstOrDefault(s => s.ShoppingCartId == cartId);
+
+                _dbContext.ShoppingCarts.Remove(cart);
+
+            }
+
         }
+
 
 
         public void Update(ShoppingCart shoppingCart)

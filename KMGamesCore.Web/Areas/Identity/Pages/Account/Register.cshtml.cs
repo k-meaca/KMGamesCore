@@ -114,7 +114,8 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             [Required]
             public string LastName { get; set; }
 
-            public string? StreetAddress { get; set; }
+            [StringLength(300,ErrorMessage = "Street Address must be provided.",MinimumLength = 6)]
+            public string StreetAddress { get; set; }
 
 
             [Required]
@@ -148,7 +149,8 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
             [ValidateNever]
             public List<SelectListItem> Cities { get; set; }
 
-
+            [StringLength(14,ErrorMessage = "Phone must be provided.",MinimumLength =1)]
+            public string Phone { get; set; }
 
         }
 
@@ -214,9 +216,10 @@ namespace KMGamesCore.Web.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.CountryId = Input.CountryId;
-
+                user.StreetAddress = Input.StreetAddress;
                 user.ZipCode = Input.ZipCode;
-
+                user.PhoneNumber = Input.Phone;
+                user.PhoneNumberConfirmed = true;
 
                 //HARDCODE
                 //user.CityId = _unitOfWork.Cities.GetAll().FirstOrDefault().CityId;

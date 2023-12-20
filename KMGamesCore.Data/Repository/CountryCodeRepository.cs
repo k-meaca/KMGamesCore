@@ -1,7 +1,6 @@
 ﻿using KMGamesCore.Data.DBContext;
 using KMGamesCore.Data.Repository.Interfaces;
 using KMGamesCore.Models.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +9,17 @@ using System.Threading.Tasks;
 
 namespace KMGamesCore.Data.Repository
 {
-    public class SaleRepository : Repository<Sale>, ISalesRepository
+    public class CountryCodeRepository : Repository<CountryCode>, ICountryCodeRepository
     {
         //----------PROPERTIES----------//
 
         private readonly ApplicationDBContext _dbContext;
 
         //----------CONSTRUCTOR----------//
-        public SaleRepository(ApplicationDBContext dBContext) : base(dBContext)
+        
+        public CountryCodeRepository(ApplicationDBContext dBContext) : base(dBContext)
         {
             _dbContext = dBContext;
         }
-
-        //----------METHODS----------//
-
-
     }
 }

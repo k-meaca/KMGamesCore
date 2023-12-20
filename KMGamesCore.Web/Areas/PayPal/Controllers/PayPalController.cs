@@ -50,6 +50,8 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
 
                 var applicationUser = _unitOfWork.ApplicationUsers.Get(a => a.Id == userId);
 
+                applicationUser.Country = _unitOfWork.Countries.Get(c => c.CountryId == applicationUser.CountryId);
+
                 ShoppingCart cart = _unitOfWork.ShoppingCarts.Get(c => c.ApplicationUserId == userId, "GamesInCart");
 
                 List<Game> games = new List<Game>();
@@ -69,6 +71,12 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
 
                 var reference = "REF" + cart.ShoppingCartId.ToString();
 
+                //var countries = _unitOfWork.CountriesCode.GetAll();
+
+                var countryCode = _unitOfWork.CountriesCode.Get(cc => cc.Country == applicationUser.Country.Name.ToUpper());
+
+                var code = countryCode.Code;
+
                 PayPal.Models.PayPal paypal = new()
                 {
                     name = new()
@@ -79,10 +87,17 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
                     email_address = applicationUser.Email,
                     address = new()
                     {
-                        country_code = "AR",
+                        country_code = code,
                         address_line_1 = applicationUser.StreetAddress,
                         admin_area_1 = _unitOfWork.Cities.Get(c => c.CityId == applicationUser.CityId).Name,
                         postal_code = applicationUser.ZipCode
+                    },
+                    phone = new()
+                    {
+                        phone_number = new()
+                        {
+                            national_number = applicationUser.PhoneNumber
+                        }
                     }
                     
                 };
@@ -162,6 +177,8 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
 
                 var details = new List<SaleDetail>();
 
+                var purchasedGames = new List<PurchasedGame>();
+
                 foreach(var gameInCart in cart.GamesInCart)
                 {
                     var game = _unitOfWork.Games.Get(g => g.GameId == gameInCart.GameId);
@@ -170,6 +187,11 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
                     {
                         GameId = game.GameId,
                         GamePrice = game.ActualPrice
+                    });
+                    purchasedGames.Add(new PurchasedGame()
+                    {
+                        GameId = game.GameId,
+                        Purchased = DateTime.Now
                     });
                 }
 
@@ -183,6 +205,12 @@ namespace KMGamesCore.Web.Areas.PayPal.Controllers
                 };
 
                 _unitOfWork.Sales.Add(sale);
+
+                _unitOfWork.SaveChanges();
+
+                var applicationUser = _unitOfWork.ApplicationUsers.Get(a => a.Id == userId);
+
+                _unitOfWork.ApplicationUsers.AddGamesTo(applicationUser, purchasedGames);
 
                 _unitOfWork.SaveChanges();
 

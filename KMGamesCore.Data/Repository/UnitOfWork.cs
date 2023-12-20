@@ -14,6 +14,8 @@ namespace KMGamesCore.Data.Repository
         public ICategoryRepository Categories { get; private set; }
         public ICityRepository Cities { get; private set; }
         public ICountryRepository Countries { get; private set; }
+
+        public ICountryCodeRepository CountriesCode { get; private set; }
         public IDeveloperRepository Developers { get; private set; }
         public IGameRepository Games { get; private set; }
         public IPlayerTypeRepository PlayerTypes { get; private set; }
@@ -30,6 +32,7 @@ namespace KMGamesCore.Data.Repository
             Categories = new CategoryRepository(dbContext);
             Cities = new CityRepository(dbContext);
             Countries = new CountryRepository(dbContext);
+            CountriesCode = new CountryCodeRepository(dbContext);
             Developers = new DeveloperRepository(dbContext);
             Games = new GameRepository(dbContext);
             PlayerTypes = new PlayerTypeRepository(dbContext);

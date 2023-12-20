@@ -11,6 +11,8 @@ namespace KMGamesCore.Data.Repository.Interfaces
     {
         void RemoveFromCart(int gameId, int cartId);
 
+        bool Exist(int cartId);
+
         void Update(ShoppingCart shoppingCart);
     }
 }

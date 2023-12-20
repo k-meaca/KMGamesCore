@@ -21,5 +21,14 @@ namespace KMGamesCore.Data.Repository
         {
             _dBContext = dBContext;
         }
+
+        //----------METHODS----------//
+
+        public void AddGamesTo(ApplicationUser user, List<PurchasedGame> games)
+        {
+            user.PurchasedGames = games;
+
+            _dBContext.ApplicationUsers.Update(user);
+        }
     }
 }

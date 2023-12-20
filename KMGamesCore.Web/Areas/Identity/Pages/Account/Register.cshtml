@@ -54,8 +54,16 @@
                     <span asp-validation-for="Input.CityId" class="text-danger"></span>
                 </div>
                 <div class="form-group form-floating mt-2">
+                    <label asp-for="Input.StreetAddress" class="form-label mb-2"></label>
+                    <input type="text" asp-for="Input.StreetAddress" class="form-control" aria-required="true" />
+                </div>
+                <div class="form-group form-floating mt-2">
                     <label asp-for="Input.ZipCode" class="form-label mb-2"></label>
                     <input type="text" asp-for="Input.ZipCode" class="form-control" aria-required="true" />
+                </div>
+                <div class="form-group form-floating mt-2">
+                    <label asp-for="Input.Phone" class="form-label mb-2"></label>
+                    <input type="text" asp-for="Input.Phone" class="form-control" aria-required="true" />
                 </div>
                 <div class="form-group mt-2">
                     <label asp-for="Input.Role" class="form-label" aria-required="true"></label>
